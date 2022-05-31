@@ -1,8 +1,6 @@
 package com.jsf01.jsf_01.model;
 
-import com.jsf01.jsf_01.enuns.Turno;
-
-import javax.inject.Named;
+import com.jsf01.jsf_01.enums.Turno;
 
 public class Estudante {
     private String name = "Evandro";
