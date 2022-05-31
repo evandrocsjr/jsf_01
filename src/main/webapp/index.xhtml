@@ -4,11 +4,14 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xml:lang="en" lang="en">
-<head>
+      xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xml:lang="en" lang="en">
+<h:head>
     <title>Página principal</title>
-</head>
+</h:head>
 <h:body>
+    <!--    CRIA UMA VARIAVEL  -->
+    <c:set var="numerosList" value="#{[1,2,3,4,5,6,7,8]}"/>
+
     <p:importEnum type="com.jsf01.jsf_01.enums.Turno" var="Turno" allSuffix="ALL_ENUM_VALUES"/>
     <h:outputLabel value="efetuando teste"/><br/>
     <h:outputLabel value="Nome do estudante:"/><br/>
@@ -44,6 +47,80 @@
     #{estudanteMB.executandoRetorno(estudanteMB.estudante.name)}
     <h:form>
         <h:commandButton value="Vai para próxima pagina" action="#{estudanteMB.nextPage()}"/>
+    </h:form><br/>
+    <ui:repeat value="#{estudanteMB.nomeArray}" var="nome" varStatus="status">
+        <p:outputLabel value="#{nome}" style="color: #{status.index mod 2 == 0 ? 'red' : 'green'}"/> <br/>
+    </ui:repeat>
+
+    <h:commandButton value="Faz mágica" onclick="alertMagic('Uma mágica')"/>
+
+    <h:commandButton value="Mostra o nome do meliante" onclick="showName('#{estudanteMB.estudante.name}')"/>
+    <hr/>
+    <h:form>
+
+        <h:commandButton value="Exibir nota">
+            <f:ajax render="notasEstudantes" listener="#{estudanteMB.exibirNota()}"/>
+        </h:commandButton><br/>
+        <h:commandButton value="Esconder nota">
+            <f:ajax render="notasEstudantes" listener="#{estudanteMB.esconderNota()}"/>
+        </h:commandButton><br/>
+        <h:panelGrid id="notasEstudantes">
+            <h:outputText value="#{estudanteMB.estudante.name}"/>
+            <h:outputText value="#{estudanteMB.estudante.sobrenome}"/>
+            <h:outputText value="#{estudanteMB.estudante.turno}"/>
+            <h:outputText value="#{estudanteMB.estudante.nota1}" rendered="#{estudanteMB.mostrarNota}"/>
+            <h:outputText value="#{estudanteMB.estudante.nota2}" rendered="#{estudanteMB.mostrarNota}"/>
+            <h:outputText value="#{estudanteMB.estudante.nota3}" rendered="#{estudanteMB.mostrarNota}"/>
+        </h:panelGrid>
+
+        <h:commandButton value="Exibir Link">
+            <f:ajax render="pgLink" listener="#{estudanteMB.exibirLink()}"/>
+        </h:commandButton>
+        <h:commandButton value="Esconder Link">
+            <f:ajax render="pgLink" listener="#{estudanteMB.esconderLink()}"/>
+        </h:commandButton>
+        <h:panelGroup id="pgLink">
+            <ui:fragment id="fragmentLink" rendered="#{estudanteMB.mostrarLink}">
+                <a href="http://www.google.com" target="_blank">www.google.com</a>
+            </ui:fragment>
+        </h:panelGroup>
     </h:form>
+
+    <!--    LAMBDA -->
+    <h:outputText value="#{((v1, v2, v3) -> v1 * v2 * v3) (20, 40, 22)}"/>
+    <h:outputText value="#{(v1 -> v1 * 10)(300)}"/>
+
+    <h:form>
+        <h:commandButton value="Calcular Cubo" actionListener="#{estudanteMB.calcularCubo((x -> x*x*x), 20)}"/>
+    </h:form>
+
+    <ui:repeat value="#{['evandro', 'cunha', 'santos']}" var="item">
+        #{item}
+    </ui:repeat>
+    <hr/>
+    <!--    MAP -->
+    <ui:repeat value="#{{'Curso': 'curso1', 'Nome': 'Curso tal', 'Tempo': '30h'}}" var="curso">
+        <ui:repeat value="#{curso.entrySet().toArray()}" var="entry">
+            #{entry.key} - #{entry.value}<br/>
+        </ui:repeat>
+    </ui:repeat>
+    <hr/>
+
+    <!--    STREAM ARRAY-->
+    <ui:repeat value="#{[1,2,3,4,5,6,7,8,9,10].stream().filter(n -> n> 3).toArray()}" var="result">
+        #{result}
+    </ui:repeat>
+    <br/>
+    #{numerosList.stream().average().get()}
 </h:body>
+<script type="text/javascript">
+    function alertMagic(magic) {
+        alert(magic)
+    }
+
+    function showName(name) {
+        alert(name)
+    }
+</script>
 </html>
+
