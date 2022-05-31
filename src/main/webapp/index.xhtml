@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" xml:lang="en" lang="en">
+<head>
+    <title>Página principal</title>
+</head>
+<h:body>
+    <p:importEnum type="com.jsf01.jsf_01.enuns.Turno" var="Turno" allSuffix="ALL_ENUM_VALUES"/>
+    <h:outputLabel value="efetuando teste"/><br/>
+    <h:outputLabel value="Nome do estudante:"/><br/>
+    <h:button value="teste"/><br/>
+    <h:outputLabel value="#{estudanteMB.estudante.name}"/><br/>
+    <h:outputLabel value="#{estudanteMB.estudante.nota2 lt estudanteMB.estudante.nota1}"/>
+    <h:outputLabel value="#{estudanteMB.estudante.name.equals('Evandro')}"/>
+    <br/>
+    <p:outputLabel value="ENUM"/><br/>
+    <p:outputLabel value="#{estudanteMB.estudante.turno.equals(Turno.NOTURNO)}"/>
+
+    <!--    Arrays -->
+    <p:outputLabel value="#{estudanteMB.nomeArray.get(1)} #{estudanteMB.nomeArray.get(2)}"/><br/>
+
+    <!--    ui:repeat ArrayList -->
+    <ui:repeat value="#{estudanteMB.nomeArray}" var="nome">
+        <p:outputLabel value="#{nome}"/><br/>
+    </ui:repeat>
+
+    <!--    ui:repeat SET -->
+    <p:outputLabel value="-------- SET ---------"/><br/>
+    <ui:repeat value="#{estudanteMB.setList.toArray()}" var="nome">
+        <p:outputLabel value="#{nome}"/><br/>
+    </ui:repeat>
+
+    <!--    ui:repeat MAP -->
+    <p:outputLabel value="-------- MAP ---------"/><br/>
+    <p:outputLabel value="#{estudanteMB.mapList.get('Evandro')}"/>
+    <ui:repeat value="#{estudanteMB.mapList.entrySet().toArray()}" var="entry">
+        <p:outputLabel value="#{entry.key} - #{entry.value}"/><br/>
+    </ui:repeat>
+    #{estudanteMB.executar(estudanteMB.estudante.name)}<br/>
+    #{estudanteMB.executandoRetorno(estudanteMB.estudante.name)}
+    <h:form>
+        <h:commandButton value="Vai para próxima pagina" action="#{estudanteMB.nextPage()}"/>
+    </h:form>
+</h:body>
+</html>
