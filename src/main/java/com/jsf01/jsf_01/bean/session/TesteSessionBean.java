@@ -1,6 +1,7 @@
-package com.jsf01.jsf_01.bean.request;
+package com.jsf01.jsf_01.bean.session;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,15 +11,20 @@ import java.util.concurrent.ThreadLocalRandom;
 import static java.util.Arrays.asList;
 
 @Named
-@RequestScoped
-public class TesteRequestBean implements Serializable {
-    private List<String> personagens = asList("Evandro", "Paulo", "Pedro");
+@SessionScoped
+public class TesteSessionBean implements Serializable {
+    private List<String> personagens = asList("Goku", "Naruto", "João");
     private List<String> personagensSelecionados = new ArrayList<>();
 
     public void selecionarPersonagem(){
         int index = ThreadLocalRandom.current().nextInt(3);
         String personagem = personagens.get(index);
         personagensSelecionados.add(personagem);
+    }
+
+    public String logout(){
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "session?faces-redirect=true";
     }
 
     public List<String> getPersonagensSelecionados() {
